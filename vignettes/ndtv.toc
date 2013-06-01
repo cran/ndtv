@@ -1,0 +1,24 @@
+\contentsline {section}{\numberline {1}Introduction}{2}{section.1}
+\contentsline {section}{\numberline {2}A quick example}{2}{section.2}
+\contentsline {subsection}{\numberline {2.1}Reinventing the wheel}{2}{subsection.2.1}
+\contentsline {subsection}{\numberline {2.2}What just happened?}{3}{subsection.2.2}
+\contentsline {section}{\numberline {3}A tergm simulation example}{5}{section.3}
+\contentsline {section}{\numberline {4}Slicing time}{7}{section.4}
+\contentsline {section}{\numberline {5}Layout algorithms}{10}{section.5}
+\contentsline {subsection}{\numberline {5.1}Kamada-Kawai adaptation}{11}{subsection.5.1}
+\contentsline {subsection}{\numberline {5.2}MDSJ (Multidimensional Scaling for Java)}{11}{subsection.5.2}
+\contentsline {subsection}{\numberline {5.3}Use a TEA attribute}{12}{subsection.5.3}
+\contentsline {subsection}{\numberline {5.4}User-generated layout functions}{12}{subsection.5.4}
+\contentsline {subsection}{\numberline {5.5}Other techniques}{12}{subsection.5.5}
+\contentsline {section}{\numberline {6}Vertex dynamics}{13}{section.6}
+\contentsline {section}{\numberline {7}Animating attributes}{14}{section.7}
+\contentsline {section}{\numberline {8}Dependencies}{14}{section.8}
+\contentsline {subsection}{\numberline {8.1}Java (for MDSJ)}{14}{subsection.8.1}
+\contentsline {subsection}{\numberline {8.2}FFmpeg}{15}{subsection.8.2}
+\contentsline {section}{\numberline {9}Compressing video}{15}{section.9}
+\contentsline {section}{\numberline {10}Reference for the main command}{15}{section.10}
+\contentsline {subsection}{\numberline {10.1}compute.animation()}{15}{subsection.10.1}
+\contentsline {subsection}{\numberline {10.2}render.animation()}{16}{subsection.10.2}
+\contentsline {subsection}{\numberline {10.3}saveVideo()}{17}{subsection.10.3}
+\contentsline {section}{\numberline {11}Limitations}{17}{section.11}
+\contentsline {subsection}{\numberline {11.1}Size limits}{17}{subsection.11.1}
