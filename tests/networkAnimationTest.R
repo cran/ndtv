@@ -130,6 +130,19 @@ compute.animation(test, animation.mode='useAttribute',layout.par = list(x = "x",
 render.animation(test,displaylabels=TRUE)
 
 
+# single vertex matrix collapse bug #332
+compute.animation(as.networkDynamic(network.initialize(1)))
+
+# test animation of single vertex
+test<-network.initialize(3)
+deactivate.vertices(test)
+activate.vertices(test,v=2,onset=0,terminus=3)
+compute.animation(test)
+render.animation(test)
+
+# test specifying xlim and ylim
+render.animation(test,xlim=c(-1,1),ylim=c(-1,1))
+
 # ----- java tests ----
 
 # does the check for java crash?
