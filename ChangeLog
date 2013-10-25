@@ -1,4 +1,9 @@
 ChangeLog for ndtv
+v0.3
+ - resaved data objects to fix spurious namespace import problem flagged by CRAN
+ - fixed bug when network has only single vertex
+ - fixed undefiend plot range bug triggered by same condidtion
+ - fixed error specifying xlim and ylim in render.animation
 v0.2 - minor features and bug fixes
  - added work-around for RStudio plotting errors
  - fixed jittering plots issue
