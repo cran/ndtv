@@ -28,12 +28,12 @@ An (optional) value to be used to replace undefined values created by isolates a
 }
   \item{weight.attr}{character, (optional) the name of an edge attribute of \code{net} containing numeric values to use for edge distances.}
   
-  \item{weight.dist}{logical, should the edge values given by \code{weight.attr} be interpreted as distances (larger values should place vertices farther apart) ? Default (\code{FALSE}) assumes values are similarities (larger values means stronger connection means virtices closer together ).
+  \item{weight.dist}{logical, should the edge values given by \code{weight.attr} be interpreted as distances (larger values should place vertices farther apart) ? Default (\code{FALSE}) assumes values are similarities (larger values means stronger connection means vertices closer together ).
   }
   
 }
 \details{
-If no \code{default.dist} is provided the value \code{sqrt(network.size(net))} will be used. If input is similarity, it will be recoded/reversed to distances by subtracting each non-zero value from the max  value of the matrix and adding the min value of the matrix. Input matrix will then be symmatrized to max value of i-j relation. 
+If no \code{default.dist} is provided the value \code{sqrt(network.size(net))} will be used. If input is similarity, it will be recoded/reversed to distances by subtracting each non-zero value from the max  value of the matrix and adding the min value of the matrix. If the network is directed, the matrix will then be symmatrized to either the max value of i-j relation (if \code{weight.dist=FALSE}) or min value of i-j relation (if \code{weight.dist=TRUE}). Note that if the network is marked as undirected but includes bi-directional edges, the (i,j) value will be chosen instead of (j,i). 
 }
 \value{
 A distance matrix assumed to be appropriate for the network.
