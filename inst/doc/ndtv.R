@@ -68,7 +68,7 @@ stergm.sim.1 <- simulate.stergm(stergm.fit.1,
 ### code chunk number 9: calc_params
 ###################################################
 slice.par<-list(start=75,end=100,interval=1, 
-                aggregate.dur=1,rule="any")
+                aggregate.dur=1,rule="latest")
 compute.animation(stergm.sim.1,slice.par=slice.par,
                                 animation.mode='MDSJ')
 
@@ -102,11 +102,11 @@ saveVideo(ani.replay(),video.name="stergm.sim.1.mp4",
 
 
 ###################################################
-### code chunk number 14: ndtv.Rnw:153-161
+### code chunk number 14: ndtv.Rnw:163-171
 ###################################################
 data(McFarland_cls33_10_16_96)
 slice.par<-list(start=0,end=30,interval=2.5, 
-                aggregate.dur=0,rule="any")
+                aggregate.dur=0,rule="latest")
 compute.animation(cls33_10_16_96,
                 slice.par=slice.par,animation.mode='MDSJ')
 render.animation(cls33_10_16_96,
@@ -121,10 +121,10 @@ timeline(cls33_10_16_96,slice.par=slice.par)
 
 
 ###################################################
-### code chunk number 16: ndtv.Rnw:172-179
+### code chunk number 16: ndtv.Rnw:182-189
 ###################################################
 slice.par<-list(start=0,end=30,interval=2.5, 
-                aggregate.dur=2.5,rule="any")
+                aggregate.dur=2.5,rule="latest")
 compute.animation(cls33_10_16_96,
                 slice.par=slice.par,animation.mode='MDSJ')
 render.animation(cls33_10_16_96,
@@ -133,10 +133,10 @@ ani.replay()
 
 
 ###################################################
-### code chunk number 17: ndtv.Rnw:184-192
+### code chunk number 17: ndtv.Rnw:194-202
 ###################################################
 slice.par<-list(start=0,end=30,interval=1, 
-                aggregate.dur=5,rule="any")
+                aggregate.dur=5,rule="latest")
 timeline(cls33_10_16_96,slice.par=slice.par)
 compute.animation(cls33_10_16_96,
                 slice.par=slice.par,animation.mode='MDSJ')
@@ -173,7 +173,7 @@ ani.replay()
 ###################################################
 data(windsurfers)
 slice.par<-list(start=1,end=31,interval=1, 
-                aggregate.dur=1,rule="any")
+                aggregate.dur=1,rule="latest")
 windsurfers<-compute.animation(windsurfers,slice.par=slice.par,
                                default.dist=3,
                                animation.mode='MDSJ',
@@ -189,7 +189,7 @@ ani.replay()
 ### code chunk number 21: windsurfers
 ###################################################
 slice.par<-list(start=0,end=24,interval=1, 
-                aggregate.dur=7,rule="any")
+                aggregate.dur=7,rule="latest")
 windsurfers<-compute.animation(windsurfers,slice.par=slice.par,
                                default.dist=3,
                                animation.mode='MDSJ',
@@ -235,7 +235,38 @@ ani.replay()
 
 
 ###################################################
-### code chunk number 26: foo
+### code chunk number 26: wheel_color_function
+###################################################
+render.animation(wheel,edge.lwd=3, 
+    edge.col=function(slice){rgb((slice%e%'width')/10,0,0)},
+    verbose=FALSE)
+ani.replay()
+
+
+###################################################
+### code chunk number 27: wheel_betweeness_function
+###################################################
+require(sna)
+wheel%n%'slice.par'<-list(start=1,end=10,interval=1, 
+                          aggregate.dur=1,rule='latest')
+render.animation(wheel,
+      vertex.cex=function(slice){(betweenness(slice)+1)/5},
+      verbose=FALSE)
+ani.replay()
+
+
+###################################################
+### code chunk number 28: wheel_zoom
+###################################################
+render.animation(wheel,
+      xlim=function(onset){c(-5/(onset*.5),5/(onset*.5))},
+      ylim=function(onset){c(-5/(onset*.5),5/(onset*.5))},
+      verbose=FALSE)
+ani.replay()
+
+
+###################################################
+### code chunk number 29: foo
 ###################################################
 packageAsBibitem <- function(pkgname){
   cite <- citation(package=pkgname)
@@ -253,19 +284,19 @@ packageAsBibitem <- function(pkgname){
 
 
 ###################################################
-### code chunk number 27: ndtv.Rnw:414-415
+### code chunk number 30: ndtv.Rnw:468-469
 ###################################################
  packageAsBibitem('networkDynamic')
 
 
 ###################################################
-### code chunk number 28: ndtv.Rnw:424-425
+### code chunk number 31: ndtv.Rnw:478-479
 ###################################################
  packageAsBibitem('ndtv')
 
 
 ###################################################
-### code chunk number 29: ndtv.Rnw:443-444
+### code chunk number 32: ndtv.Rnw:497-498
 ###################################################
  packageAsBibitem('tergm')
 
