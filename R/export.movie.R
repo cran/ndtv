@@ -139,9 +139,24 @@ compute.animation <- function(net, slice.par=NULL, animation.mode="kamadakawai",
 #go through the sets of coordinates attached to the network
 #compute interpolation frames, and actually draw it out
 #optionally save it directly to a file
-render.animation <- function(net, render.par=list(tween.frames=10,show.time=TRUE,show.stats=NULL,extraPlotCmds=NULL),plot.par=list(bg='white'),ani.options=list(interval=0.1),render.cache=c('plot.list','none'), verbose=TRUE,...){
+render.animation <- function(net, render.par=list(tween.frames=10,show.time=TRUE,show.stats=NULL,extraPlotCmds=NULL,initial.coords=0),plot.par=list(bg='white'),ani.options=list(interval=0.1),render.cache=c('plot.list','none'), verbose=TRUE,...){
   if (!is.network(net)){
     stop("render.animation requires the first argument to be a network object")
+  }
+  
+  
+  # check render.par params
+  if (is.null(render.par)){
+    stop("render.animation is missing the 'render.par' argument (a list of rendering parameters).")
+  }
+  if (is.null(render.par$tween.frames)){
+    render.par$tween.frames<-10 
+  }
+  if (is.null(render.par$show.time)){
+    render.par$show.time<-TRUE
+  }
+  if (is.null(render.par$initial.coords)){
+    render.par$initial.coords<-matrix(0,ncol=2,nrow=network.size(net))
   }
   
   #check if coordinates have already been computed
@@ -149,10 +164,15 @@ render.animation <- function(net, render.par=list(tween.frames=10,show.time=TRUE
     net <- compute.animation(net,verbose=verbose)
   }
   
+  
   # temporary hard-coded param to work around plot issue in RStudio
   externalDevice<-FALSE
+  doRStudioHack<-TRUE
+  if(!is.null(render.par$'do_RStudio_plot_hack')){
+    doRStudioHack<-render.par$'do_RStudio_plot_hack'
+  }
   if (!is.function(options()$device)){
-    if (names(dev.cur())=="RStudioGD"){
+    if (names(dev.cur())=="RStudioGD" & doRStudioHack){
       message("RStudio's graphics device is not well supported by ndtv, attempting to open another type of plot window")
       # try to open a new platform-appropriate plot window
       if (.Platform$OS.type=='windows'){
@@ -166,12 +186,14 @@ render.animation <- function(net, render.par=list(tween.frames=10,show.time=TRUE
       externalDevice<-TRUE
     }
   }
+  
   # make sure background color is not transparent unless set that way explicitly
-  if (par("bg")=="transparent"){
-    par(bg='white')
+  if (par("bg")=="transparent" & is.null(plot.par$'bg')){
+    plot.par$'bg'<-'white'
   }
   # set high-level plot attributes (bg color, margins, etc)
-  par(plot.par) 
+  # and cache initial graphics par settings
+  origPar<-par(plot.par) 
   
   # set animation options
   oopts <- ani.options(ani.options)
@@ -182,16 +204,7 @@ render.animation <- function(net, render.par=list(tween.frames=10,show.time=TRUE
     stop("render.animation can not locate the 'slice.par' list of parameters in the input network object")
   }
   
-  # check render.par params
-  if (is.null(render.par)){
-    stop("render.animation is missing the 'render.par' argument (a list of rendering parameters).")
-  }
-  if (is.null(render.par$tween.frames)){
-    render.par$tween.frames<-10 
-  }
-  if (is.null(render.par$show.time)){
-    render.par$show.time<-TRUE
-  }
+  
   # check plot caching params
   render.cache<-match.arg(render.cache)
   
@@ -206,7 +219,7 @@ render.animation <- function(net, render.par=list(tween.frames=10,show.time=TRUE
   }
   # xlab defaults to time
   if(is.null(plot_params$xlab) & render.par$show.time){
-    plot_params$xlab <- function(onset,terminus){paste("t=",onset,"-",terminus,sep='')}
+    plot_params$xlab <- function(onset,terminus){ifelse(onset==terminus,paste("t=",onset,sep=''),paste("t=",onset,"-",terminus,sep=''))}
   }
   # but if show stats, use that instead 
   # TODO: deprecate show.stats in favor of passing in directly for evaluation?
@@ -256,30 +269,34 @@ render.animation <- function(net, render.par=list(tween.frames=10,show.time=TRUE
     plot_params$ylim<-c(ymin,ymax)
   }
   
+  #set up default coords.  If not specified, default will be zero
+  if(is.numeric(render.par$initial.coords)){
+    coords<-matrix(render.par$initial.coords,ncol=2,nrow=network.size(net))
+  }
+  
   #compute some starting coords  
   slice <- network.collapse(net,starts[1],ends[1],rule=slice.par$rule,rm.time.info=FALSE) 
   activev <- is.active(net,starts[1],ends[1],v=seq_len(network.size(net)),rule=if(slice.par$rule!='all'){'any'})
   
-  #if the first slice is empty, just start from zeros
-  # TODO: start from initial coords?
-  coords<-matrix(0,ncol=2,nrow=network.size(net))
+  # start from the coords of the first slice
   if (length(slice)>0 & network.size(slice)>0){ 
     coords[activev,1] <-get.vertex.attribute(slice,"animation.x")
     coords[activev,2] <-get.vertex.attribute(slice,"animation.y")
     #need to update plot params with slice-specific values
-    evald_params<-.evaluate_plot_params(plot_params=plot_params,net=net,slice=slice,s=1,onset=starts[1],terminus=ends[1])
+#     evald_params<-.evaluate_plot_params(plot_params=plot_params,net=net,slice=slice,s=1,onset=starts[1],terminus=ends[1])
+#     
+#     
+#     # set up arguments
+#     plot_args<-list(x=slice,coord=coords[activev,,drop=FALSE])
+#     plot_args<-c(plot_args,evald_params)
+#     # cll the plotting function with appropriate args
+#     do.call(plot.network, plot_args)
+#                
+#     # check if user has passed in extra plotting commands that need to be rendered
+#     if (!is.null(render.par$extraPlotCmds)){
+#       eval(render.par$extraPlotCmds)
+#     }
     
-    
-    # set up arguments
-    plot_args<-list(x=slice,coord=coords[activev,,drop=FALSE])
-    plot_args<-c(plot_args,evald_params)
-    # cll the plotting function with appropriate args
-    do.call(plot.network, plot_args)
-               
-    # check if user has passed in extra plotting commands that need to be rendered
-    if (!is.null(render.par$extraPlotCmds)){
-      eval(render.par$extraPlotCmds)
-    }
   }# end slice > 0 block
     
   coords2 <- coords
@@ -326,6 +343,7 @@ render.animation <- function(net, render.par=list(tween.frames=10,show.time=TRUE
     } else { # end slice > 0 block
       # empty network causes plot problems
       # draw some blank frames while time passes
+      evald_params<-.evaluate_plot_params(plot_params=plot_params,net=net,slice=slice,s=s,onset=starts[s],terminus=ends[s])
       if(render.par$show.time){
         xlab<-evald_params$xlab
       } else {
@@ -347,6 +365,8 @@ render.animation <- function(net, render.par=list(tween.frames=10,show.time=TRUE
     } # end empty network block
   }
   
+  # reset the graphics params back
+  par(origPar)
   # turn off external device if using one
   if (externalDevice){
     dev.off()
@@ -372,7 +392,7 @@ render.animation <- function(net, render.par=list(tween.frames=10,show.time=TRUE
   for (fun_index in fun_params){
     # get the names of the funtions arguments
     argnames<-names(as.list(args(plot_params[[fun_index]])))
-    argnames = argnames[-length(argnames)]
+    argnames <- argnames[-length(argnames)] # trim off last element
     # construct an argument list by mapping of values to function params
     args<-list()
     for (arg in argnames){
@@ -391,7 +411,11 @@ render.animation <- function(net, render.par=list(tween.frames=10,show.time=TRUE
       }
     }
     # replace the function on the list with the results of its evaluation
-    plot_params[[fun_index]]<-do.call(plot_params[[fun_index]],args=args)
+    val<-do.call(plot_params[[fun_index]],args=args)
+    # make sure we dont' clobber the list element by setting it to NULL
+    if(!is.null(val)){
+      plot_params[[fun_index]]<-val
+    }
   }
   # return the modified list of plot params
   return(plot_params)

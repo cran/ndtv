@@ -49,10 +49,7 @@ activate.vertex.attribute(test,'status',1,onset=4,terminus=10,v=4)
 compute.animation(test)
 render.animation(test,vertex.col=function(slice){ifelse(slice%v%'status'==1,'red','blue')})
 
-# ----- kk layout ------
 
-# ----- mdsj layout -----
-# ndtv:::install.mdsj()
 
 # test a bad function arg
 expect_error(render.animation(test,vertex.col=function(peaches){ifelse(peaches%v%'status'==1,'red','blue')}),'unknown argument name')
