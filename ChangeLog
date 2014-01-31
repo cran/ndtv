@@ -1,4 +1,11 @@
 ChangeLog for ndtv
+v0.5
+ - render.animation now caches and restores original plotting 'par()' params
+ - added parameter to render.animation for passing in initial default coordiantes
+ - useAttribute layout now defaults to look for attributes named 'x' and 'y' if not specified. 
+ - added layout.normalize function for rescaling coordinates to (-1,1)
+ - added support for using external Graphviz (http://www.graphviz.org) layouts if installed
+ - added filmstrip function to create static small multiple plots of frames from a network animation
 v0.4
  - added ability to specify plot.network as functions to be evaluated at each network time point
  - added weight.attr and weight.dist arguments to compute.animation, making it possible to use numeric edge attributes to specifiy desired distances/similarities in network layouts

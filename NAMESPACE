@@ -1,3 +1,6 @@
+importFrom(sna,geodist)
+import(statnet.common, network, networkDynamic, animation)
+
 export(
 render.animation,
 compute.animation,
@@ -6,8 +9,11 @@ export.pajek.net,
 network.layout.animate.kamadakawai,
 network.layout.animate.MDSJ,
 network.layout.animate.useAttribute,
+network.layout.animate.Graphviz,
 layout.distance,
 layout.center,
+layout.normalize,
 timeline,
-proximity.timeline
+proximity.timeline,
+filmstrip
 )
