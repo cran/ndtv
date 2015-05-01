@@ -7,7 +7,7 @@
 %
 %  Copyright 2012-2013 Statnet Commons
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\name{network.layout.animate.kamadakawai}
+\name{network.layout.animate}
 \alias{network.layout.animate.kamadakawai}
 \alias{network.layout.animate.MDSJ}
 \alias{network.layout.animate.useAttribute}
@@ -23,7 +23,8 @@ network.layout.animate.kamadakawai(net, dist.mat = NULL, default.dist = NULL,
                         seed.coords = NULL, layout.par = list(),verbose=FALSE)
 
 network.layout.animate.MDSJ(net, dist.mat = NULL, default.dist = NULL, 
-                seed.coords = NULL, layout.par=list(max_iter=50),verbose=TRUE)
+                seed.coords = NULL, layout.par=list(max_iter=50, dimensions =
+                 2),verbose=TRUE)
                 
 network.layout.animate.useAttribute(net, dist.mat = NULL, default.dist = NULL,
      seed.coords = NULL,  layout.par = list(x = "x", y = "y"), verbose = TRUE)
@@ -63,7 +64,7 @@ The MDSJ layout uses the MDSJ Java library written by Christian Pich, Algorithmi
 
 When the MDSJ layout is called it checks for working Java installation, and then checks if MDSJ is installed. If not, it prompts the user and (optionally) downloads and installs MDSJ. If MDSJ is not installed, it falls back to calling the KamadaKawai layout instead.  
 
-MDSJ is quite fast for larger networks, but relatively less efficient for smaller ones because of the overhead of \code{system} calls and Java start up for each layout.  The \code{verbose} option prints more information on the Java process.  The \code{max_iter} parameter sets the maximum of minimization steps the algorithm can try. In cases where it seems like the layout has not completely finished, this can be set higher.
+MDSJ is quite fast for larger networks, but relatively less efficient for smaller ones because of the overhead of \code{system} calls and Java start up for each layout.  The \code{verbose} option prints more information on the Java process.  The \code{max_iter} parameter sets the maximum of minimization steps the algorithm can try. In cases where it seems like the layout has not completely finished, this can be set higher. The \code{dimensions} argument sets the number of dimensions the layout should be performed in and indirectly the number of columns expected and produced for coordinate matrices. 
 
 \strong{useAttribute}
 
@@ -71,10 +72,13 @@ The \code{useAttribute} layout makes it possible to define vertex positions usin
 
 \strong{Graphviz}
 
-The \code{Graphviz} layout is a wrapper for the Graphviz \url{http://http://www.graphviz.org} software library. If the library is installed on your system (see \code{\link{install.graphviz}}), it provides a number of additional high-quality layouts. When layout is called it checks for a working Graphviz installation (falling back to KamadaKawai if Graphviz cannot be found) and writes the network to a temp file using \code{\link{export.dot}}. Then the appropriate Graphviz layout engine (default is \code{neato}) is executed via a \code{system} call, and the coordinates of the vertices are parsed from the output.  
+The \code{Graphviz} layout is a wrapper for the Graphviz \url{http://www.graphviz.org} software library. If the library is installed on your system (see \code{\link{install.graphviz}}), it provides a number of additional high-quality layouts. When layout is called it checks for a working Graphviz installation (falling back to KamadaKawai if Graphviz cannot be found) and writes the network to a temp file using \code{\link{export.dot}}. Then the appropriate Graphviz layout engine (default is \code{neato}) is executed via a \code{system} call, and the coordinates of the vertices are parsed from the output.  
 
 Currently, the arguments to \code{layout.par} can be used to specify the Graphviz layout engine to use (i.e. \code{gv.engine='neato'} for stress-minimized, \code{gv.engine='dot'} for hierarchal, \code{gv.engine='fdp'} for force-directed, etc) and additional command-line control parameters can be passed in via \code{gv.args}.  For example, to use the 'dot' layout, but change layout rank direction to Left-Right: \code{layout.par=list(gv.engine='dot',gv.args='-Grankdir=LR')}.  See \url{http://www.graphviz.org/content/command-line-invocation}.  Note that Graphviz's graphic rendering parameters are not used to control network plot rendering (but they may impact layout positions). 
 
+It is also possible to pass edge attributes of the network directly through to the Graphviz .dot file by passing in the names of the attributes using \code{gv.edge.attrs} argument to \code{layout.par}. For example, \code{layout.par=list(gv.edge.attrs='len')} will write the value of the edge attribute 'len' to a gv attribute 'len', which would control the edge lengths when using neato or fdp \url{http://www.graphviz.org/content/attrs#dlen}.
+
+The Graphviz layout normally ignores the values in \code{dist.mat}, but for compatibility with other layouts, it is possible to use the values in \code{dist.mat} to influence Graphviz's edge length by setting \code{layout.par} \code{gv.len.mode='ndtv.distance.matrix'} instead of its default \code{'gv.edge.len'}. This writes out all of the possible edges to the file and will overide any other edge attributes. 
 
 }
 \value{

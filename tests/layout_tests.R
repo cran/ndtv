@@ -5,7 +5,7 @@
 #  open source, and has the attribution requirements (GPL Section 7) at
 #  http://statnet.org/attribution
 #
-#  Copyright 2012-2013 Statnet Commons
+#  Copyright 2012-2014 Statnet Commons
 #######################################################################
 
 # tests for the network animation layout functions
@@ -118,6 +118,31 @@ network.layout.animate.Graphviz(tree,layout.par=list(gv.engine='dot',gv.args='-G
 # check passing bad gv.args
 expect_error(network.layout.animate.Graphviz(tree,layout.par=list(gv.args='-Xhelloworld'),verbose=FALSE),'Error')
 
+# test passing a weighted network into neato
+wtest<-network.initialize(5)
+add.edges.active(wtest,tail = 1,head=2,onset=0,terminus=10)
+add.edges.active(wtest,tail = 2,head=3,onset=1,terminus=10)
+add.edges.active(wtest,tail = 3,head=4,onset=2,terminus=10)
+activate.edge.attribute(wtest,'len',0.5,onset=0,terminus=5,e = 1)
+activate.edge.attribute(wtest,'len',2.5,onset=5,terminus=10,e=1)
+activate.edge.attribute(wtest,'len',2,onset=1,terminus=5,e = 2)
+activate.edge.attribute(wtest,'len',1,onset=5,terminus=10,e=2)
+activate.edge.attribute(wtest,'len',5,onset=2,terminus=5,e = 3)
+activate.edge.attribute(wtest,'len',0.1,onset=5,terminus=10,e=3)
+
+# test rendering using the gv 'len' attrigute
+compute.animation(wtest,animation.mode = 'Graphviz',layout.par=list(gv.len.mode='gv.edge.len',gv.edge.attrs='len'))
+#render.animation(wtest,edge.lwd='len')
+
+# test passing in matrix of distances
+compute.animation(wtest,animation.mode = 'Graphviz',weight.attr='len',layout.par=list(gv.engine='neato',gv.len.mode='ndtv.distance.matrix'))
+
+# test using default dist to generate a matrix
+compute.animation(wtest,animation.mode = 'Graphviz',default.dist=5)
+
+# test bad weight mode
+expect_error(compute.animation(wtest,animation.mode = 'Graphviz',layout.par=list(gv.len.mode='bla')))
+
 }  else {
 # graphivz not installed, so check fallback to kk
 warning("graphviz layout tests skipped because graphviz not installed on system")
@@ -125,6 +150,31 @@ expect_warning(coords<-network.layout.animate.Graphviz(tree),'KamadaKawai')
 expect_equal(nrow(coords),21)
 expect_equal(ncol(coords),2)
 
+}
+
+# ------------- MDSJ tests -------
+
+# these need to be optionally enabled because they won't run if java and mdsj library not installed
+if (!is.null(ndtv:::check.mdsj()) ){
+  wtest<-network.initialize(5)
+  add.edges.active(wtest,tail = 1,head=2,onset=0,terminus=10)
+  add.edges.active(wtest,tail = 2,head=3,onset=1,terminus=10)
+  add.edges.active(wtest,tail = 3,head=4,onset=2,terminus=10)
+  activate.edge.attribute(wtest,'len',0.5,onset=0,terminus=5,e = 1)
+  activate.edge.attribute(wtest,'len',2.5,onset=5,terminus=10,e=1)
+  activate.edge.attribute(wtest,'len',2,onset=1,terminus=5,e = 2)
+  activate.edge.attribute(wtest,'len',1,onset=5,terminus=10,e=2)
+  activate.edge.attribute(wtest,'len',5,onset=2,terminus=5,e = 3)
+  activate.edge.attribute(wtest,'len',0.1,onset=5,terminus=10,e=3)
+  
+  compute.animation(wtest,animation.mode = 'MDSJ',weight.attr='len')
+
+ # dests for changing dimensions of MDSJ layout
+test<-network.initialize(10)
+dim2mat<-network.layout.animate.MDSJ(test,layout.par=list(dimensions=2))
+expect_equal(dim(dim2mat),c(10,2))
+dim1mat<-network.layout.animate.MDSJ(test,layout.par=list(dimensions=1))
+expect_equal(dim(dim1mat),c(10,1))
 }
 
 

@@ -19,13 +19,27 @@ require(network)
 
 export.dot <-
 function(x,file="",coords=NULL,all.dyads=FALSE,vert.attrs=NULL,edge.attrs=NULL){
-  if (!all.dyads){ #the easy way
+  
+  if (is.logical(all.dyads) && !all.dyads){ #the easy way
+    # use only existing edges in the network
    edges <- as.matrix(x,matrix.type="edgelist")
+  } else if (is.numeric(all.dyads)){
+    if (length(all.dyads)==1){
+      #the harder way. need to print out all the dyads, replaces zeros with the value of all.dyads
+      matrix <- as.matrix(x,matrix.type="adjacency",as.sna.edgelist = FALSE)
+      matrix <- replace(matrix,matrix==0,all.dyads)
+    } else {
+      # assume it is an adjacency matrix of desired distances
+      matrix<-as.matrix(all.dyads)
+    }
+      edges <- as.matrix(as.network(matrix,matrix.type = 'adjacency',ignore.eval = FALSE,names.eval='len',loops = has.loops(x),directed = is.directed(x)),matrix.type="edgelist",attrname = 'len')
+     # give a warning that all edge attributes other than length will be ignored
+     if (!is.null(edge.attrs)){
+       warning('edge attributes ',edge.attrs,' were ignored in dot file output because all.dyads matrix was used')
+       edge.attrs<-NULL
+     }
   } else {
-    #the harder way
-    matrix <- as.matrix(x,matrix.type="adjacency")
-    matrix <- replace(matrix,matrix==0,all.dyads)
-    edges <- as.matrix(as.network(matrix),matrix.type="edgelist")
+    stop('argument all.dyads must be FALSE, numeric length 1, or a matrix with dimension equal to the size of the network')
   }
 	cat("digraph g {\n",file=file)
   cat("graph[];\n",file=file, append=TRUE)
@@ -53,9 +67,17 @@ function(x,file="",coords=NULL,all.dyads=FALSE,vert.attrs=NULL,edge.attrs=NULL){
       eAttrStrings<-paste(eAttrStrings,attrname,'="',vals,'", ',sep='')
     }
   }
-	for(e in seq_len(nrow(edges))){
-		cat(paste(edges[e,1],"->",edges[e,2],"[",eAttrStrings[e],"];\n"),file=file, append=TRUE)
-	}	
+  if (ncol(edges)==2){
+    # print edges with possible attribute strings
+  	for(e in seq_len(nrow(edges))){
+  		cat(paste(edges[e,1],"->",edges[e,2],"[",eAttrStrings[e],"];\n"),file=file, append=TRUE)
+  	}	
+  } else if (ncol(edges)==3){
+    # assume we are probably doing all dyads and the 3rd column is the desired edge length
+    for(e in seq_len(nrow(edges))){
+      cat(paste(edges[e,1]," -> ",edges[e,2],' [len="',edges[e,3],'"];\n',sep=''),file=file, append=TRUE)
+    }	
+  }
 	cat("}",file=file, append=TRUE)	
 }
 
@@ -78,18 +100,18 @@ function(x,file="",coords=NULL,all.dyads=FALSE,vert.attrs=NULL,edge.attrs=NULL){
 # documented here: http://www.graphviz.org/content/output-formats#dplain
 
 # this function parses the output above and returns a two-column coordinate matrix
-parseCoordsFromGraphvizPlain<-function(text){
+parseCoordsFromGraphvizPlain<-function(text,dim=2){
   coords<-NULL
   # grab all the rows that start with 'node'
   nodeLines<-grep("^node",text,value=TRUE)
   # check for 0-vertex net
   if (length(nodeLines)>0){
     # split on spaces and grab the 3rd and 4th elements
-    nodeLines<-lapply(nodeLines,function(line){strsplit(line,split=" ")[[1]][3:4]})
+    nodeLines<-lapply(nodeLines,function(line){strsplit(line,split=" ")[[1]][2+seq.int(dim)]})
     # reformat into matrix
-    coords<-matrix(as.numeric(unlist(nodeLines)),ncol=2,byrow=TRUE)
+    coords<-matrix(as.numeric(unlist(nodeLines)),ncol=dim,byrow=TRUE)
   } else {
-    coords<-matrix(0,nrow=0,ncol=2)
+    coords<-matrix(0,nrow=0,ncol=dim)
   }
   
   if(is.null(coords)){

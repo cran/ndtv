@@ -8,9 +8,6 @@
 #  Copyright 2012-2013 Statnet Commons
 #######################################################################
 #functions to generate and export movies
-#require(sna)
-require(networkDynamic)
-require(animation)
 #apply a series of network layouts to a networkDynamic object
 #store the coordinates as temporal attributes on the network
 compute.animation <- function(net, slice.par=NULL, animation.mode="kamadakawai", seed.coords=NULL, layout.par=list(),default.dist=NULL, weight.attr=NULL,weight.dist=FALSE, chain.direction=c('forward','reverse'), verbose=TRUE,...){
@@ -68,7 +65,7 @@ compute.animation <- function(net, slice.par=NULL, animation.mode="kamadakawai",
   if (is.null(slice.par)){
     slice.par <- guessSlicePar(net)
     if(verbose){
-      print('No slice.par found, using')
+      message('No slice.par found, using')
       .print.slice.par(slice.par)
     }
   }
@@ -107,7 +104,7 @@ compute.animation <- function(net, slice.par=NULL, animation.mode="kamadakawai",
     yrange <-c(min(coords[,2]),max(coords[,2]))
     
     if(verbose){
-      print(paste("Calculating layout for network slice from time ",starts[s],"to",ends[s]))
+      message(paste("Calculating layout for network slice from time ",starts[s],"to",ends[s]))
     }
     #only compute the layout involving active nodes and edges
     activev <- is.active(net,starts[s],ends[s], rule=if(slice.par$rule!='all'){'any'},v=seq_len(network.size(net)))
@@ -128,7 +125,10 @@ compute.animation <- function(net, slice.par=NULL, animation.mode="kamadakawai",
       coords[activev,] <- newCoords
       net <- activate.vertex.attribute(net,prefix="animation.x",onset=starts[s],terminus=ends[s],value=newCoords[,1],v=which(activev))
       net <- activate.vertex.attribute(net,prefix="animation.y",onset=starts[s],terminus=ends[s],value=newCoords[,2],v=which(activev))
-    }
+    } 
+      # TODO: should we still store coords at the same position as previous frame?
+      
+    
     
   }
   if(exists(xn, envir=ev))
@@ -283,20 +283,6 @@ render.animation <- function(net, render.par=list(tween.frames=10,show.time=TRUE
     coords[activev,1] <-get.vertex.attribute(slice,"animation.x")
     coords[activev,2] <-get.vertex.attribute(slice,"animation.y")
     #need to update plot params with slice-specific values
-#     evald_params<-.evaluate_plot_params(plot_params=plot_params,net=net,slice=slice,s=1,onset=starts[1],terminus=ends[1])
-#     
-#     
-#     # set up arguments
-#     plot_args<-list(x=slice,coord=coords[activev,,drop=FALSE])
-#     plot_args<-c(plot_args,evald_params)
-#     # cll the plotting function with appropriate args
-#     do.call(plot.network, plot_args)
-#                
-#     # check if user has passed in extra plotting commands that need to be rendered
-#     if (!is.null(render.par$extraPlotCmds)){
-#       eval(render.par$extraPlotCmds)
-#     }
-    
   }# end slice > 0 block
     
   coords2 <- coords
@@ -306,7 +292,7 @@ render.animation <- function(net, render.par=list(tween.frames=10,show.time=TRUE
   }
   #move through frames to render them out
   for(s in 1:length(starts)){
-    if (verbose){print(paste("rendering",render.par$tween.frames,"frames for slice",s-1))}
+    if (verbose){message(paste("rendering",render.par$tween.frames,"frames for slice",s-1))}
     slice <- network.collapse(net,starts[s],ends[s],rule=slice.par$rule,rm.time.info=FALSE)
     activev <- is.active(net,starts[s],ends[s],v=seq_len(network.size(net)),rule=if(slice.par$rule!='all'){'any'})
    
@@ -415,6 +401,9 @@ render.animation <- function(net, render.par=list(tween.frames=10,show.time=TRUE
     # make sure we dont' clobber the list element by setting it to NULL
     if(!is.null(val)){
       plot_params[[fun_index]]<-val
+    } else {
+      # we can't leave it as a function, so what do we set it to?
+      plot_params[[fun_index]]<-numeric(0)
     }
   }
   # return the modified list of plot params
@@ -423,8 +412,13 @@ render.animation <- function(net, render.par=list(tween.frames=10,show.time=TRUE
     
 #common function called to construct the distance matrix for mds-based layouts
 layout.distance <-function(net,default.dist=NULL,weight.attr=NULL,weight.dist=FALSE){
+  
   if (is.null(default.dist)){
     default.dist=sqrt(network.size(net))
+  } else {
+    if(!is.numeric(default.dist) | length(default.dist)>1){
+      stop('default.dist must be a numeric value of length 1')
+    }
   }
   # if there are no edges, don't worry about the edge value
   if (network.edgecount(net)<1){
