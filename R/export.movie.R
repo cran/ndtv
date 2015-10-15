@@ -174,16 +174,27 @@ render.animation <- function(net, render.par=list(tween.frames=10,show.time=TRUE
   if (!is.function(options()$device)){
     if (names(dev.cur())=="RStudioGD" & doRStudioHack){
       message("RStudio's graphics device is not well supported by ndtv, attempting to open another type of plot window")
-      # try to open a new platform-appropriate plot window
-      if (.Platform$OS.type=='windows'){
-        windows()
-      } else if(length(grep(R.version$platform,pattern='apple'))>0)  # is it mac?
-      {
-        quartz()
-      } else {  # must be unix
-        x11()
+      # check if user allready specified something with R_DEFAULT_DEVICE
+      defaultDev<-Sys.getenv('R_DEFAULT_DEVICE')
+      if (identical(defaultDev,'')){
+        # try to open a new platform-appropriate plot window
+        if (.Platform$OS.type=='windows'){
+          #windows()
+          defaultDev<-'windows'
+        } else if(length(grep(R.version$platform,pattern='apple'))>0)  # is it mac?
+        {
+          #quartz()
+          defaultDev= 'quartz'
+        } else {  # must be unix
+          #x11()
+          defaultDev='x11'
+        }
+        Sys.setenv(R_DEFAULT_DEVICE=defaultDev)
       }
+      dev.new(noRStudioGD = TRUE)
       externalDevice<-TRUE
+      # don't forget to set the R_DEFAULT_DEVICE back to '' or R CMD Check will balk
+      Sys.setenv(R_DEFAULT_DEVICE='')
     }
   }
   
@@ -248,19 +259,34 @@ render.animation <- function(net, render.par=list(tween.frames=10,show.time=TRUE
   ends <- seq(from=slice.par$start+slice.par$aggregate.dur,to=slice.par$end+slice.par$aggregate.dur,by=slice.par$interval)
 
   #compute coordinate ranges to know how to scale plots
-  xmin <- aggregate.vertex.attribute.active(net,"animation.x",min)
-  xmax <- aggregate.vertex.attribute.active(net,"animation.x",max)
-  ymin <- aggregate.vertex.attribute.active(net,"animation.y",min)
-  ymax <- aggregate.vertex.attribute.active(net,"animation.y",max)
+  xmin <- min(aggregate.vertex.attribute.active(net,"animation.x",min),na.rm=TRUE)
+  xmax <- max(aggregate.vertex.attribute.active(net,"animation.x",max),na.rm=TRUE)
+  ymin <- min(aggregate.vertex.attribute.active(net,"animation.y",min),na.rm=TRUE)
+  ymax <- max(aggregate.vertex.attribute.active(net,"animation.y",max),na.rm=TRUE)
   if (is.null(plot_params$xlim)){
+    # deal with Inf or NA
+    if(is.na(xmin) | is.infinite(xmin)){
+      xmin<--1
+    } 
+    if(is.na(xmax) | is.infinite(xmax)){
+      xmax<-1
+    }
     # deal with case of only one coord, so no range
     if(xmin==xmax){
+      
       xmax<-xmin+1
       xmin<-xmin-1
     }
     plot_params$xlim<-c(xmin,xmax)
   }
   if(is.null(plot_params$ylim)){
+    # deal with Inf or NA
+    if(is.na(ymin) | is.infinite(ymin)){
+      ymin<--1
+    } 
+    if(is.na(ymax) | is.infinite(ymax)){
+      ymax<-1
+    }
     # deal with case of only one coord, so no range
     if(ymin==ymax){
       ymax<-ymin+1
@@ -393,7 +419,9 @@ render.animation <- function(net, render.par=list(tween.frames=10,show.time=TRUE
       } else if (arg=='terminus'){
         args<-c(args,list(terminus=terminus))
       } else {
-        stop('unknown argument name "',arg,'" in function provided for ',names(fun_params)[[fun_index]],' graphic parameter:',deparse(plot_params[[fun_index]]))
+        #stop('unknown argument name "',arg,'" in function provided for ',names(fun_params)[[fun_index]],' graphic parameter:',deparse(plot_params[[fun_index]]))
+        # copy in the original argument corresponding to the argument name
+        args[[arg]]<-as.list(args(plot_params[[fun_index]]))[[arg]]
       }
     }
     # replace the function on the list with the results of its evaluation

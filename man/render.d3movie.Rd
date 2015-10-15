@@ -16,7 +16,7 @@ render.d3movie(net, filename=tempfile(fileext = '.html'),
                                            initial.coords=0),
                            plot.par=list(bg='white'),
                            d3.options, 
-                           output.mode=c('HTML','JSON','inline'),
+                           output.mode=c('HTML','JSON','inline','htmlWidget'),
                            script.type=c('embedded','remoteSrc'),
                            launchBrowser=TRUE,
                            verbose=TRUE,...)
@@ -56,7 +56,7 @@ list of `high-level' plotting control arguments to be passed to \code{\link{par}
                            )} See Details below for explanations
 }
   \item{output.mode}{
-character string, one of \code{'HTML'},\code{'JSON'} or \code{'inline'}.  The first exports an HTML file with embedded javascript player app including the JSON data structure describing the animation. The second just exports the JSON data structure (for loading into an existing page).  The 3rd renders the HTML inside an iframe tag and supresses all other output in an attempt to make it embedable in rmarkdown documents.
+character string, one of \code{'HTML'},\code{'JSON'} or \code{'inline'}.  The first exports an HTML file with embedded javascript player app including the JSON data structure describing the animation. The second just exports the JSON data structure (for loading into an existing page).  The 3rd renders the HTML inside an iframe tag and supresses all other output in an attempt to make it embedable in rmarkdown documents. The 4th generates a \code{htmlWidget} suitable for displaying in an RStudio plot window or Shiny app. 
 }
  \item{script.type}{if \code{script.type='embedded'}, the scripts will be embedded directly in the output html page. This option is the most portable, but will require large file sizes. If \code{script.type='remoteSrc'}, only the links to the scripts will be included, so the page will require an active internet connection to play the animation. 
  }
@@ -83,7 +83,7 @@ However,  \code{ndtv-d3} includes several nice features to support exploring the
 \item{double-click on a vertex to highlight all of the connected edges and vertices}
 }
 
-If passed a static network, by default only a single slice will be rendered and the time slider and controllers will be disabled. 
+If passed a static network, by default only a single slice will be rendered and the time slider and controllers will be disabled. For consistency with \code{\link{plot.network}} the static mode also supports passing in a matrix of coordinates via \code{coord} argument which will prevent the default call to \code{compute.animation}.
 
 Another advantage of \code{ndtv-d3} is that it does not require installing system libraries such as \code{ffmpeg} to render out the movie. 
 
@@ -140,6 +140,7 @@ ndtv-d3 has its own configuration properties passed in via the \code{d3.options}
 If \code{output.mode='HTML'}, a file will be generated including the necessary javascript and JSON data structures
 If \code{output.mode='JSON'}, a JSON file will be generated including a section describing all of the rendered slices, and a seperate section including the entire networkDynamic object.
 If \code{output.mode='inline'}, HTML code for an iframe elment suitible for embedding in markdown documents will be printed, all other output supressed.  
+If \code{output.mode='htmlWidget'}, a \code{\link[htmlwidgets]{htmlwidgets}} object will be returned which, will produce appropriate html when 'printed' or emedded in a Shiny app
 }
 \references{
 The github repository for the ndtv-d3 javascript library is at \url{https://github.com/statnet/ndtv-d3/} (which is the statnet release fork of \url{https://github.com/michalgm/ndtv-d3/})
@@ -161,6 +162,9 @@ See also the ndtv-d3 vignette \url{http://statnet.csde.washington.edu/workshops/
 data(short.stergm.sim)
 render.d3movie(short.stergm.sim)
 
+# render interactive widget in rmarkdown or RStudio plot window
+render.d3movie(short.stergm.sim,output.mode='htmlWidget')
+
 # render a static network as interactive SVG with lots of html tooltip info
 data(emon)
 render.d3movie(emon[[5]],
@@ -172,10 +176,14 @@ render.d3movie(emon[[5]],
     edge.lwd='Frequency')
 
 \dontrun{
-# this code chunk will embed in rmarkdown
+
+
+# alternate code for embeding in rmarkdown
 ```{r,results='asis'}
 render.d3movie(short.stergm.sim,output.mode='inline')
 ```
+
+
 }
 
 }
