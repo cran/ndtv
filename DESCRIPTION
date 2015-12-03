@@ -1,8 +1,8 @@
 Package: ndtv
 Type: Package
 Title: Network Dynamic Temporal Visualizations
-Version: 0.7.0
-Date: 2015-10-08
+Version: 0.8.0
+Date: 2015-12-01
 Authors@R: c(
 		person("Skye", "Bender-deMoll", role=c("cre","aut"), email="skyebend@uw.edu"),
     person("Martina", "Morris", role=c("ctb"), email="morrism@u.washington.edu"))
@@ -16,9 +16,9 @@ License: GPL-3 + file LICENSE
 URL: http://statnet.org
 VignetteBuilder: knitr
 NeedsCompilation: no
-Packaged: 2015-10-14 22:32:58 UTC; rpackagebuilder
+Packaged: 2015-12-02 12:50:27 UTC; rpackagebuilder
 Author: Skye Bender-deMoll [cre, aut],
   Martina Morris [ctb]
 Maintainer: Skye Bender-deMoll <skyebend@uw.edu>
 Repository: CRAN
-Date/Publication: 2015-10-15 13:24:57
+Date/Publication: 2015-12-03 00:17:22

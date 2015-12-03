@@ -1,7 +1,7 @@
-507b0811dc4796feb34fa7c70443b459 *ChangeLog
-f14463b2e57e77b6ac20d27eb9c1d3e9 *DESCRIPTION
+5dae2396f883f290f21aef3c059c35f3 *ChangeLog
+fd4ad120604b28a9d3f66ccd193bce81 *DESCRIPTION
 746941d6d678652e8c7aa7fc4fd2250a *LICENSE
-e6d24277d16b407b11900c96e322dd7e *NAMESPACE
+2eb61eae67266e17a4a618bcb95eb0b7 *NAMESPACE
 c608593b3f37853b655ed2bacef86930 *R/animate.interpolation.R
 7bbce1ddc0edc9af20594d897797d75d *R/animate.layouts.R
 06b35b307f41d0c2bdbf7567ec85fe87 *R/export.dot.R
@@ -11,7 +11,7 @@ a98e8104b30cc0f197a6254ccc6f134d *R/export.movie.R
 bff7043d6fa2fe6436c4be9dfe623a41 *R/filmstrip.R
 e0c3cff624c48b2e33a63cfe16b3534c *R/installers.R
 5ec1c1d1cd217342ec9bffeac115ab67 *R/layout_centering.R
-f4ccc7e8c7860e2194252642d2565e71 *R/ndtvAnimationWidget.R
+75930c24a25f0d3415f35b5384a0ff4e *R/ndtvAnimationWidget.R
 7624c4e77b1634c1efa5f95ce4266618 *R/proximity.timeline.R
 ee49e6ded285d09dbcd7478087c16677 *R/render.d3_animation.R
 7e65e308872f5a19ea598b4709a3b610 *R/specialEffects.R
@@ -26,8 +26,8 @@ edbef7b0d02c3e5e375a330e137a2097 *build/vignette.rds
 fd57cc1e68708759d1fd070608b8ccb7 *data/toy_epi_sim.rda
 92156a151dda5e43d9f61c76ef500a0f *inst/doc/ndtv.R
 ad5ba8398a76db3fe0b5e08d51619fc8 *inst/doc/ndtv.Rnw
-d7ed2c5bf907a93270e4d4c5faac389a *inst/doc/ndtv.pdf
-7f2ca036b691f3ce1a54a46991e234bb *inst/htmlwidgets/ndtvAnimationWidget.js
+ded975690b2c55f359cbe81de3a4336b *inst/doc/ndtv.pdf
+79aac524241cba9d58b2addd44ad4fb0 *inst/htmlwidgets/ndtvAnimationWidget.js
 63b65f2a8ca4560642d5a522a4dc2f55 *inst/htmlwidgets/ndtvAnimationWidget.yaml
 109eab9f55cfa80ec55e84104eb39f06 *inst/java/MDSJWrapper.class
 77a40a1a4f867ed9698c4aac11aeb0ae *inst/javascript/ndtv-d3/LICENSE
@@ -54,11 +54,12 @@ b98427f0ad0039697a9cb3a220189490 *man/install.graphviz.Rd
 292f6e54710ae4c53e58977295ab133f *man/layout_centering.Rd
 bef21ed61f3397cfc1c16cfb46e015a5 *man/msm.sim.Rd
 ebd580bb9fdef3e3c8cab34c73fd08fa *man/ndtv-package.Rd
+7ae79e4a654772dc8a5c490a05bb9d24 *man/ndtvAnimationWidget.Rd
 988d716f2b8294a879b6683d4e86ac22 *man/network.layout.animate.Rd
 3e7bc004e23aabc0af24c3311040a6f2 *man/proximity.timeline.Rd
 5bb5ef8c3e4910bfd35fd8e51fc8d91a *man/render.animation.Rd
 e79edadb7377645bf7364bdfeb57cd5b *man/render.d3movie.Rd
-a43387958e368d7cb6865853e8b5455a *man/stergm.sim.1.Rd
+91c375d6ee8ca863e6745248fed21948 *man/stergm.sim.1.Rd
 4bb568e95235891974fd684a9d1ee23d *man/timePrism.Rd
 6a2b90f5e23ede37801921eea9d3a035 *man/timeline.Rd
 45a263b99b1c4aafb318b339a0963e84 *man/toy_epi_sim.Rd
