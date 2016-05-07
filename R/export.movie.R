@@ -5,7 +5,7 @@
 #  open source, and has the attribution requirements (GPL Section 7) at
 #  http://statnet.org/attribution
 #
-#  Copyright 2012-2013 Statnet Commons
+#  Copyright 2012-2016 Statnet Commons
 #######################################################################
 #functions to generate and export movies
 #apply a series of network layouts to a networkDynamic object
@@ -239,9 +239,9 @@ render.animation <- function(net, render.par=list(tween.frames=10,show.time=TRUE
     # TODO: this requires that tergm be loaded! give informative warning if not
     if(render.par$show.time){
       # include the time string in the summary
-      plot_params$xlab <- eval(parse(text=paste("function(slice,onset,terminus){stats<-summary.statistics.network(slice",render.par$show.stats,")\n return(paste('t=',onset,'-',terminus,' ',paste(rbind(names(stats),stats),collapse=':'),sep='')) }",sep='')))
+      plot_params$xlab <- eval(parse(text=paste("function(slice,onset,terminus){stats<-ergm::summary.statistics.network(slice",render.par$show.stats,")\n return(paste('t=',onset,'-',terminus,' ',paste(rbind(names(stats),stats),collapse=':'),sep='')) }",sep='')))
     } else {
-      plot_params$xlab <- eval(parse(text=paste("function(slice){stats<-summary.statistics.network(slice",render.par$show.stats,")\n return(paste(rbind(names(stats),stats),collapse=':')) }",sep='')))
+      plot_params$xlab <- eval(parse(text=paste("function(slice){stats<-ergm::summary.statistics.network(slice",render.par$show.stats,")\n return(paste(rbind(names(stats),stats),collapse=':')) }",sep='')))
     }
   }
   

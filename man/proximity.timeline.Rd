@@ -5,7 +5,7 @@
 %  open source, and has the attribution requirements (GPL Section 7) at
 %  http://statnet.org/attribution
 %
-%  Copyright 2012-2013 Statnet Commons
+%  Copyright 2012-2016 Statnet Commons
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \name{proximity.timeline}
 \alias{proximity.timeline}
@@ -18,10 +18,13 @@ This a DRAFT version of the function, parameters are likely to change. Creates a
 }
 \usage{
 proximity.timeline(nd,  start = NULL, end = NULL, time.increment = NULL,
-  onsets = NULL, termini = NULL, default.dist = NULL, vertex.col = "#55555555", 
-  label = network.vertex.names(nd), labels.at = NULL, label.cex = 1,
-  vertex.cex = 2, splines = -0.2, grid = TRUE, 
+  onsets = NULL, termini = NULL, rule='earliest', default.dist = NULL, 
+  vertex.col = "#55555555", label = network.vertex.names(nd), 
+  labels.at = NULL, label.cex = 1,
+  vertex.cex = 2, splines = -0.2, render.edges=FALSE, grid=!render.edges, 
+  edge.col='#00000055', edge.lwd=4,
   mode=c('isoMDS','sammon','cmdscale','gvNeato','MDSJ'),
+  coords=NULL,
   draw.inactive=NULL, 
   spline.style=c('default','inactive.ghost','inactive.gaps',
                 'inactive.ignore','color.attribute'),
@@ -38,6 +41,7 @@ a \code{networkDynamic} object to be plotted.
   \item{time.increment}{optional numeric value to increment network sampling to be passed to \code{link{get.networks}}}
   \item{onsets}{optional numeric vector of sampling onset time points to be passed to \code{link{get.networks}}}
   \item{termini}{optional numeric vector of sampling terminus time points to be passed to \code{link{get.networks}}}
+  \item{rule}{attribute aggregation rule (default \code{'earliest'}) to be passed to \code{\link{network.collapse}}} 
   \item{default.dist}{numeric default distance parameter to space apart isolates and disconnected components. Usually defaults to square root of network size (see \code{\link{layout.distance}})
 }
   \item{vertex.col}{
@@ -53,9 +57,14 @@ either a character color value, a vector of values of length equal to the size o
 }
   \item{splines}{ numeric. value controls how tightly the splines meet their control points. A value of 0 draws straight lines and sharp corners, values less than zero cause the spline to pass through the control point, values greater than zero will approximate the point. See the \code{shape} argument of \code{\link{xspline}}.
 }
-  \item{grid}{ logical. if \code{TRUE}, vertical lines in the background color will be drawn at the beginning of each time slice to make it easier to determine where on the splines the positions are actually set. 
+\item{render.edges}{logical (default FALSE). Should overlapping virtical lines corresponding to the  edges be drawn between the the splines corresponding to the vertices at the time points of edge onsets?
+}
+\item{edge.col}{ color value or edge attribute name to be used for the edge lines if \code{render.edges=TRUE}}
+\item{edge.lwd}{numeric line width value or edge attribute name to be used for the width of the edge lines if \code{render.edges=TRUE}}
+  \item{grid}{ logical. if \code{TRUE}, vertical lines in the background color will be drawn at the beginning of each time slice to make it easier to determine where on the splines the positions are actually set. Usually this is not used with \code{render.edges}
 }
  \item{mode}{name of MDS algorithm to be used.  Currently one of \code{\link{isoMDS}},\code{\link{sammon}},\code{\link{cmdscale}}}
+ \item{coords}{optional numeric matrix of pre-computed coordinates to be used instead of the algorithm in \code{mode}. The number of matrix rows must be equal to the network size and columns equal to number of time bins implied by other arguments)}
  \item{draw.inactive}{DEPRECATED. see \code{spline.style}}
  \item{spline.style}{options to control how vertices with inactive spells or changing attribute values should be drawn: 
   \itemize{
@@ -88,7 +97,7 @@ For most of the layouts it is necessary to manually adjust the default dist para
 Note for RStudio users: the spline rendering seems to be much slower on RStudio's graphics device than on other graphics devices such as \code{x11()}.
 }
 \value{
-Produces a plot with horizontal splines corresponding the vertices of the network and vertical proximities approximately proportional to geodesic distance.
+Produces a plot with horizontal splines corresponding the vertices of the network and vertical proximities approximately proportional to geodesic distance. Invisibly returns a numeric matrix of coordinates corresponding to computed positions of each vertex at each time bin. This can be passed in via the \code{coords} argument. 
 }
 \references{
 Some inspirational examples here: \url{http://skyeome.net/wordpress/?p=604}

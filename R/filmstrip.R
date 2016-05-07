@@ -5,7 +5,7 @@
 #  open source, and has the attribution requirements (GPL Section 7) at
 #  http://statnet.org/attribution
 #
-#  Copyright 2012-2013 Statnet Commons
+#  Copyright 2012-2016 Statnet Commons
 #######################################################################
 
 # function for creating small multiple images of frames of a nD animation
@@ -60,7 +60,11 @@ filmstrip <- function(nd, frames=9, slice.par,render.par,mfrow,verbose=FALSE,...
     # TODO: should be able to find a nearly-square rect that gets close to right value
     mfrow<-c(ceiling(sqrt(frames)),ceiling(sqrt(frames)))
   }
+  # cach the mfrow value so we can restore it
+  oldmfrow<-par()$mfrow
+  # render the frames out
   render.animation(nd,render.par=render.par,render.cache='none',plot.par=list(bg='white',mfrow=mfrow),verbose=verbose,...)
+  par(mfrow=oldmfrow)
   
   # restore the state of slice.par
   nd%n%'slice.par'<-oldSlicePar
