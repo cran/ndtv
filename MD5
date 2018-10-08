@@ -1,5 +1,5 @@
-6ff5e20ddb44933348959113a174f494 *ChangeLog
-ad8a0d35fe1c27a7440324f0615faa1b *DESCRIPTION
+0dd72ea65be43e6d35e51338a3c8d58f *ChangeLog
+df31e697bc24ac300d1e4544526be88c *DESCRIPTION
 746941d6d678652e8c7aa7fc4fd2250a *LICENSE
 2eb61eae67266e17a4a618bcb95eb0b7 *NAMESPACE
 3dcea7112397c559852a3e314caecf55 *R/animate.interpolation.R
@@ -24,9 +24,9 @@ ecb231e4eae5ee2622092c6e889adb63 *R/specialEffects.R
 6c48f0ef96cfccf7b8aab4e90c4149bb *data/short.stergm.sim.rda
 4d44488e080f0135c9384061248e69d2 *data/stergm.sim.1.rda
 fd57cc1e68708759d1fd070608b8ccb7 *data/toy_epi_sim.rda
-92156a151dda5e43d9f61c76ef500a0f *inst/doc/ndtv.R
-ad5ba8398a76db3fe0b5e08d51619fc8 *inst/doc/ndtv.Rnw
-d8e9cdd5117f6898c6d95f7a56914e81 *inst/doc/ndtv.pdf
+dff5ece9cfbf0b74eabac0cf4451ff78 *inst/doc/ndtv.R
+0fab74a4297f4ebac3a731536b3a4ce8 *inst/doc/ndtv.Rnw
+268bb16556dd440e174b21da2d624b0c *inst/doc/ndtv.pdf
 627f1987237e4d0e6f3f75ada8285c6d *inst/htmlwidgets/ndtvAnimationWidget.js
 63b65f2a8ca4560642d5a522a4dc2f55 *inst/htmlwidgets/ndtvAnimationWidget.yaml
 109eab9f55cfa80ec55e84104eb39f06 *inst/java/MDSJWrapper.class
@@ -79,4 +79,4 @@ d19adbce18e6ef5fad544dde3a598b13 *tests/newcombtest.off
 0a386680b738ab35d03ccbee8eea2e8f *tests/weighttest.R
 0b5d06aad70f60febc0819bdbf707da4 *tests/windsurfertest.off
 b640df37bad6b697f244eb65afd4403d *tests/writeFormatTests.R
-ad5ba8398a76db3fe0b5e08d51619fc8 *vignettes/ndtv.Rnw
+0fab74a4297f4ebac3a731536b3a4ce8 *vignettes/ndtv.Rnw

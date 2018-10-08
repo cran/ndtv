@@ -65,32 +65,22 @@ stergm.sim.1 <- simulate.stergm(stergm.fit.1,
 
 
 ###################################################
-### code chunk number 9: mdsj_actual_download
-###################################################
-# the command below will default to not installing MDSJ in a non-interactive session
-# so to make sure it is installed for this sweave build, call it internally
-mdsj.dir <- file.path(path.package("ndtv"), "java/")
-ndtv:::install.mdsj(mdsj.dir)
-
-
-###################################################
-### code chunk number 10: calc_params
+### code chunk number 9: calc_params
 ###################################################
 slice.par<-list(start=75,end=100,interval=1, 
                 aggregate.dur=1,rule="latest")
-compute.animation(stergm.sim.1,slice.par=slice.par,
-                                animation.mode='MDSJ')
+compute.animation(stergm.sim.1,slice.par=slice.par)
 
 
 ###################################################
-### code chunk number 11: render.par_animation
+### code chunk number 10: render.par_animation
 ###################################################
 render.par=list(tween.frames=5,show.time=TRUE,
                 show.stats="~edges+gwesp(0,fixed=TRUE)")
 
 
 ###################################################
-### code chunk number 12: render_animation
+### code chunk number 11: render_animation
 ###################################################
 render.animation(stergm.sim.1,render.par=render.par,
                  edge.col="darkgray",displaylabels=TRUE,
@@ -98,20 +88,20 @@ render.animation(stergm.sim.1,render.par=render.par,
 
 
 ###################################################
-### code chunk number 13: replay_animation (eval = FALSE)
+### code chunk number 12: replay_animation (eval = FALSE)
 ###################################################
 ## ani.replay()
 
 
 ###################################################
-### code chunk number 14: save_test
+### code chunk number 13: save_test
 ###################################################
 saveVideo(ani.replay(),video.name="stergm.sim.1.mp4", 
                     other.opts="-b 5000k",clean=TRUE)
 
 
 ###################################################
-### code chunk number 15: save_html
+### code chunk number 14: save_html
 ###################################################
 render.d3movie(stergm.sim.1,render.par=render.par,
                  edge.col="darkgray",displaylabels=TRUE,
@@ -120,7 +110,7 @@ render.d3movie(stergm.sim.1,render.par=render.par,
 
 
 ###################################################
-### code chunk number 16: view_Rstudio
+### code chunk number 15: view_Rstudio
 ###################################################
 render.d3movie(stergm.sim.1,render.par=render.par,
                  edge.col="darkgray",displaylabels=TRUE,
@@ -129,19 +119,19 @@ render.d3movie(stergm.sim.1,render.par=render.par,
 
 
 ###################################################
-### code chunk number 17: filmstrip
+### code chunk number 16: filmstrip
 ###################################################
 filmstrip(stergm.sim.1,displaylabels=FALSE)
 
 
 ###################################################
-### code chunk number 18: timeprism
+### code chunk number 17: timeprism
 ###################################################
 timePrism(stergm.sim.1,at = c(75,87,100))
 
 
 ###################################################
-### code chunk number 19: ndtv.Rnw:219-227
+### code chunk number 18: ndtv.Rnw:212-220
 ###################################################
 data(McFarland_cls33_10_16_96)
 slice.par<-list(start=0,end=30,interval=2.5, 
@@ -154,13 +144,13 @@ ani.replay()
 
 
 ###################################################
-### code chunk number 20: mcfarla_timeline1
+### code chunk number 19: mcfarla_timeline1
 ###################################################
 timeline(cls33_10_16_96,slice.par=slice.par)
 
 
 ###################################################
-### code chunk number 21: ndtv.Rnw:238-245
+### code chunk number 20: ndtv.Rnw:231-238
 ###################################################
 slice.par<-list(start=0,end=30,interval=2.5, 
                 aggregate.dur=2.5,rule="latest")
@@ -172,7 +162,7 @@ ani.replay()
 
 
 ###################################################
-### code chunk number 22: ndtv.Rnw:250-258
+### code chunk number 21: ndtv.Rnw:243-251
 ###################################################
 slice.par<-list(start=0,end=30,interval=1, 
                 aggregate.dur=5,rule="latest")
@@ -185,13 +175,13 @@ ani.replay()
 
 
 ###################################################
-### code chunk number 23: gv_options
+### code chunk number 22: gv_options
 ###################################################
 layout.par=list(gv.engine='dot',gv.args='-Grankdir=LR') 
 
 
 ###################################################
-### code chunk number 24: define_layout
+### code chunk number 23: define_layout
 ###################################################
 network.layout.animate.circle <- function(net, dist.mat = NULL, 
         default.dist = NULL, seed.coords = NULL, layout.par = list(),
@@ -205,7 +195,7 @@ network.layout.animate.circle <- function(net, dist.mat = NULL,
 
 
 ###################################################
-### code chunk number 25: demo_layout
+### code chunk number 24: demo_layout
 ###################################################
 stergm.sim.1<-compute.animation(stergm.sim.1,
               slice.par=slice.par,animation.mode='circle')
@@ -214,7 +204,7 @@ ani.replay()
 
 
 ###################################################
-### code chunk number 26: windsurfers
+### code chunk number 25: windsurfers
 ###################################################
 data(windsurfers)
 slice.par<-list(start=1,end=31,interval=1, 
@@ -231,7 +221,7 @@ ani.replay()
 
 
 ###################################################
-### code chunk number 27: windsurfers
+### code chunk number 26: windsurfers
 ###################################################
 slice.par<-list(start=0,end=24,interval=1, 
                 aggregate.dur=7,rule="latest")
@@ -247,7 +237,7 @@ ani.replay()
 
 
 ###################################################
-### code chunk number 28: color_wheel
+### code chunk number 27: color_wheel
 ###################################################
 activate.edge.attribute(wheel,'width',1,onset=0,terminus=3) 
 activate.edge.attribute(wheel,'width',5,onset=3,terminus=7)
@@ -255,14 +245,14 @@ activate.edge.attribute(wheel,'width',10,onset=3,terminus=Inf)
 
 
 ###################################################
-### code chunk number 29: color_wheel2
+### code chunk number 28: color_wheel2
 ###################################################
 activate.vertex.attribute(wheel,'mySize',1, onset=-Inf,terminus=Inf)
 activate.vertex.attribute(wheel,'mySize',3, onset=5,terminus=10,v=4:8)
 
 
 ###################################################
-### code chunk number 30: color_wheel3
+### code chunk number 29: color_wheel3
 ###################################################
 activate.vertex.attribute(wheel,'color','gray',onset=-Inf,terminus=Inf)
 activate.vertex.attribute(wheel,'color','red',onset=5,terminus=6,v=4)
@@ -272,7 +262,7 @@ activate.vertex.attribute(wheel,'color','pink',onset=8,terminus=9,v=7)
 
 
 ###################################################
-### code chunk number 31: color_wheel4
+### code chunk number 30: color_wheel4
 ###################################################
 render.animation(wheel,edge.lwd='width',vertex.cex='mySize',
                  vertex.col='color',verbose=FALSE)
@@ -280,7 +270,7 @@ ani.replay()
 
 
 ###################################################
-### code chunk number 32: wheel_color_function
+### code chunk number 31: wheel_color_function
 ###################################################
 render.animation(wheel,edge.lwd=3, 
     edge.col=function(slice){rgb((slice%e%'width')/10,0,0)},
@@ -289,7 +279,7 @@ ani.replay()
 
 
 ###################################################
-### code chunk number 33: wheel_betweeness_function
+### code chunk number 32: wheel_betweeness_function
 ###################################################
 require(sna)
 wheel%n%'slice.par'<-list(start=1,end=10,interval=1, 
@@ -301,7 +291,7 @@ ani.replay()
 
 
 ###################################################
-### code chunk number 34: wheel_zoom
+### code chunk number 33: wheel_zoom
 ###################################################
 render.animation(wheel,
       xlim=function(onset){c(-5/(onset*.5),5/(onset*.5))},
@@ -311,7 +301,7 @@ ani.replay()
 
 
 ###################################################
-### code chunk number 35: wheel_effect
+### code chunk number 34: wheel_effect
 ###################################################
 render.animation(wheel,
       edge.col=effectFun('edgeAgeColor',fade.dur=5,
@@ -322,7 +312,7 @@ ani.replay()
 
 
 ###################################################
-### code chunk number 36: short_stergm_prox
+### code chunk number 35: short_stergm_prox
 ###################################################
 data(short.stergm.sim)  # load a short example dataset of the flomarriage simulation
 proximity.timeline(short.stergm.sim,mode='sammon',
@@ -333,7 +323,7 @@ proximity.timeline(short.stergm.sim,mode='sammon',
 
 
 ###################################################
-### code chunk number 37: toy_epi_sim_prox
+### code chunk number 36: toy_epi_sim_prox
 ###################################################
 data(toy_epi_sim)
 # set up layout to draw plots under timeline
@@ -355,27 +345,27 @@ layout(1)
 
 
 ###################################################
-### code chunk number 38: windsurfer_timeline
+### code chunk number 37: windsurfer_timeline
 ###################################################
 timeline(windsurfers,plot.edge.spells = FALSE)
 
 
 ###################################################
-### code chunk number 39: windsurfer_prox_gaps
+### code chunk number 38: windsurfer_prox_gaps
 ###################################################
 proximity.timeline(windsurfers,start=20,end=31,mode='sammon',
                    spline.style='inactive.gaps')
 
 
 ###################################################
-### code chunk number 40: windsurfer_prox_ignore
+### code chunk number 39: windsurfer_prox_ignore
 ###################################################
 proximity.timeline(windsurfers,start=20,end=31,
                    mode='sammon',spline.style='inactive.ignore')
 
 
 ###################################################
-### code chunk number 41: windsurfer_prox_ghost
+### code chunk number 40: windsurfer_prox_ghost
 ###################################################
 proximity.timeline(windsurfers,start=20,end=31,mode='sammon',
                    spline.style='inactive.ghost')
@@ -383,7 +373,7 @@ proximity.timeline(windsurfers,start=20,end=31,mode='sammon',
 
 
 ###################################################
-### code chunk number 42: foo
+### code chunk number 41: foo
 ###################################################
 packageAsBibitem <- function(pkgname){
   cite <- citation(package=pkgname)
@@ -401,19 +391,19 @@ packageAsBibitem <- function(pkgname){
 
 
 ###################################################
-### code chunk number 43: ndtv.Rnw:635-636
+### code chunk number 42: ndtv.Rnw:628-629
 ###################################################
  packageAsBibitem('networkDynamic')
 
 
 ###################################################
-### code chunk number 44: ndtv.Rnw:645-646
+### code chunk number 43: ndtv.Rnw:638-639
 ###################################################
  packageAsBibitem('ndtv')
 
 
 ###################################################
-### code chunk number 45: ndtv.Rnw:667-668
+### code chunk number 44: ndtv.Rnw:660-661
 ###################################################
  packageAsBibitem('tergm')
 
