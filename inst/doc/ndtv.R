@@ -60,7 +60,7 @@ stergm.fit.1 <- stergm(flobusiness,
 ###################################################
 ### code chunk number 8: test_sim
 ###################################################
-stergm.sim.1 <- simulate.stergm(stergm.fit.1,
+stergm.sim.1 <- simulate(stergm.fit.1,
                     nsim=1, time.slices = 100)
 
 
