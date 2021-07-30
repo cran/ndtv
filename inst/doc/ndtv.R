@@ -402,9 +402,3 @@ packageAsBibitem <- function(pkgname){
  packageAsBibitem('ndtv')
 
 
-###################################################
-### code chunk number 44: ndtv.Rnw:660-661
-###################################################
- packageAsBibitem('tergm')
-
-
