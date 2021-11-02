@@ -1,8 +1,8 @@
 Package: ndtv
 Type: Package
 Title: Network Dynamic Temporal Visualizations
-Version: 0.13.1
-Date: 2021-07-29
+Version: 0.13.2
+Date: 2021-10-27
 Authors@R: c(
 		person("Skye", "Bender-deMoll", role=c("cre","aut"), email="skyebend@uw.edu"),
     person("Martina", "Morris", role=c("ctb"), email="morrism@u.washington.edu"))
@@ -15,9 +15,9 @@ Description: Renders dynamic network data from 'networkDynamic' objects as movie
 License: GPL-3 + file LICENSE
 URL: https://github.com/statnet/ndtv
 NeedsCompilation: no
-Packaged: 2021-07-30 05:27:59 UTC; skyebend
+Packaged: 2021-10-30 22:46:46 UTC; skyebend
 Author: Skye Bender-deMoll [cre, aut],
   Martina Morris [ctb]
 Maintainer: Skye Bender-deMoll <skyebend@uw.edu>
 Repository: CRAN
-Date/Publication: 2021-07-30 08:20:02 UTC
+Date/Publication: 2021-11-02 08:20:02 UTC
