@@ -41,27 +41,43 @@ require(tergm)    # dynamic ergm simulations
 ###################################################
 ### code chunk number 6: loading_data
 ###################################################
-data("florentine") # an example network
-plot(flobusiness,displaylabels=TRUE)
+if (require('ergm')){ # this example only works if ergm installed
+  
+  data("florentine", package='ergm') # an example network
+  plot(flobusiness,displaylabels=TRUE)
+  
+}
 
 
 ###################################################
 ### code chunk number 7: test_model
 ###################################################
-theta.diss <- log(9)
-stergm.fit.1 <- stergm(flobusiness,
-  formation= ~edges+gwesp(0,fixed=TRUE), 
-  dissolution = ~offset(edges),
-	targets="formation",
-  offset.coef.diss = theta.diss,	
-  estimate = "EGMME"	)
+if (require('tergm')){  # this example only works if tergm installed
+  
+  theta.diss <- log(9)
+  stergm.fit.1 <- stergm(flobusiness,
+    formation= ~edges+gwesp(0,fixed=TRUE), 
+    dissolution = ~offset(edges),
+	  targets="formation",
+    offset.coef.diss = theta.diss,	
+    estimate = "EGMME"	)
+  
+}
 
 
 ###################################################
 ### code chunk number 8: test_sim
 ###################################################
-stergm.sim.1 <- simulate(stergm.fit.1,
+if (require('tergm')){  # this example only if tergm installed
+  
+  stergm.sim.1 <- simulate(stergm.fit.1,
                     nsim=1, time.slices = 100)
+  
+} else { # if no tergm, we can use pre-generated example output
+  
+  data(stergm.sim.1)
+  
+}
 
 
 ###################################################
@@ -131,7 +147,7 @@ timePrism(stergm.sim.1,at = c(75,87,100))
 
 
 ###################################################
-### code chunk number 18: ndtv.Rnw:212-220
+### code chunk number 18: ndtv.Rnw:228-236
 ###################################################
 data(McFarland_cls33_10_16_96)
 slice.par<-list(start=0,end=30,interval=2.5, 
@@ -150,7 +166,7 @@ timeline(cls33_10_16_96,slice.par=slice.par)
 
 
 ###################################################
-### code chunk number 20: ndtv.Rnw:231-238
+### code chunk number 20: ndtv.Rnw:247-254
 ###################################################
 slice.par<-list(start=0,end=30,interval=2.5, 
                 aggregate.dur=2.5,rule="latest")
@@ -162,7 +178,7 @@ ani.replay()
 
 
 ###################################################
-### code chunk number 21: ndtv.Rnw:243-251
+### code chunk number 21: ndtv.Rnw:259-267
 ###################################################
 slice.par<-list(start=0,end=30,interval=1, 
                 aggregate.dur=5,rule="latest")
@@ -391,13 +407,13 @@ packageAsBibitem <- function(pkgname){
 
 
 ###################################################
-### code chunk number 42: ndtv.Rnw:628-629
+### code chunk number 42: ndtv.Rnw:644-645
 ###################################################
  packageAsBibitem('networkDynamic')
 
 
 ###################################################
-### code chunk number 43: ndtv.Rnw:638-639
+### code chunk number 43: ndtv.Rnw:654-655
 ###################################################
  packageAsBibitem('ndtv')
 
