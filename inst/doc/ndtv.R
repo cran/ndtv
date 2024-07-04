@@ -46,6 +46,8 @@ if (require('ergm')){ # this example only works if ergm installed
   data("florentine", package='ergm') # an example network
   plot(flobusiness,displaylabels=TRUE)
   
+} else {
+  plot(0,0,main='plot skipped because ergm not installed')
 }
 
 
@@ -62,6 +64,8 @@ if (require('tergm')){  # this example only works if tergm installed
     offset.coef.diss = theta.diss,	
     estimate = "EGMME"	)
   
+} else {
+  print('example skipped because tergm not installed')
 }
 
 
@@ -147,7 +151,7 @@ timePrism(stergm.sim.1,at = c(75,87,100))
 
 
 ###################################################
-### code chunk number 18: ndtv.Rnw:228-236
+### code chunk number 18: ndtv.Rnw:234-242
 ###################################################
 data(McFarland_cls33_10_16_96)
 slice.par<-list(start=0,end=30,interval=2.5, 
@@ -166,7 +170,7 @@ timeline(cls33_10_16_96,slice.par=slice.par)
 
 
 ###################################################
-### code chunk number 20: ndtv.Rnw:247-254
+### code chunk number 20: ndtv.Rnw:253-260
 ###################################################
 slice.par<-list(start=0,end=30,interval=2.5, 
                 aggregate.dur=2.5,rule="latest")
@@ -178,7 +182,7 @@ ani.replay()
 
 
 ###################################################
-### code chunk number 21: ndtv.Rnw:259-267
+### code chunk number 21: ndtv.Rnw:265-273
 ###################################################
 slice.par<-list(start=0,end=30,interval=1, 
                 aggregate.dur=5,rule="latest")
@@ -407,13 +411,13 @@ packageAsBibitem <- function(pkgname){
 
 
 ###################################################
-### code chunk number 42: ndtv.Rnw:644-645
+### code chunk number 42: ndtv.Rnw:650-651
 ###################################################
  packageAsBibitem('networkDynamic')
 
 
 ###################################################
-### code chunk number 43: ndtv.Rnw:654-655
+### code chunk number 43: ndtv.Rnw:660-661
 ###################################################
  packageAsBibitem('ndtv')
 
